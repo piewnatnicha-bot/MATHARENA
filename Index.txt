@@ -1,0 +1,231 @@
+<!DOCTYPE html><html lang="th"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1"><title>MATH ARENA</title>
+<style>
+:root{color-scheme:dark;font-family:system-ui,-apple-system,'Noto Sans Thai',sans-serif}*{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at 10% 10%,#243e82,#0a1024 60%);color:#edf5ff;min-height:100vh}.shell{max-width:1100px;margin:auto;padding:20px}.head{display:flex;align-items:center;justify-content:space-between;gap:12px}.logo{font-size:clamp(24px,4vw,38px);font-weight:900;letter-spacing:1px}.logo b{color:#66e9ff}.tag{background:#1b335d;border:1px solid #3e66a0;border-radius:30px;padding:8px 14px}.panel{background:#131f3b;border:1px solid #30466f;border-radius:22px;padding:22px;margin-top:18px;box-shadow:0 16px 40px #0003}.grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}.center{text-align:center}.muted{color:#b2c1dd}.small{font-size:13px}input,select,textarea{width:100%;background:#09162e;border:1px solid #49618d;border-radius:12px;color:#fff;padding:13px 14px;font:inherit;margin:6px 0 12px}textarea{min-height:80px}button{border:0;border-radius:12px;padding:13px 20px;font-weight:800;font:inherit;cursor:pointer;color:#071428;background:#6fe4ff}button.secondary{background:#30466c;color:#fff}button.gold{background:#ffdb77}button:disabled{opacity:.4;cursor:not-allowed}h1,h2,h3{margin:0 0 12px}.digits{display:flex;justify-content:center;flex-wrap:wrap;gap:10px}.digit{display:grid;place-items:center;width:clamp(55px,13vw,85px);height:clamp(65px,15vw,100px);background:linear-gradient(150deg,#4466b0,#203968);border:2px solid #86a5ed;border-radius:16px;font-size:clamp(30px,7vw,52px);font-weight:900}.target{font-size:clamp(55px,13vw,90px);color:#ffe08c;font-weight:900}.clock{font-size:clamp(65px,16vw,135px);font-variant-numeric:tabular-nums;font-weight:900;color:#64ebff;line-height:1.1}.clock.urgent{color:#ff6776;animation:pulse .65s infinite alternate}@keyframes pulse{to{opacity:.55}}.bar{height:12px;border-radius:20px;background:#293d64;overflow:hidden}.bar>div{height:100%;background:#5ce4ff;transition:width .2s}.canvasWrap{background:white;border-radius:15px;overflow:hidden;touch-action:none}canvas{width:100%;height:200px;display:block;touch-action:none;cursor:crosshair}.tools{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0}.tools button{font-size:13px;padding:9px 12px}.status{min-height:24px;color:#ffd784}.score{width:100%;border-collapse:collapse}.score td,.score th{border-bottom:1px solid #354668;padding:10px;text-align:left}.score th:last-child,.score td:last-child{text-align:right}.hidden{display:none!important}.pill{display:inline-block;background:#234b60;padding:5px 10px;border-radius:20px}.warn{color:#ffacaa}.good{color:#87eab3}@media(max-width:700px){.grid{grid-template-columns:1fr}.shell{padding:12px}.panel{padding:15px}.head{flex-wrap:wrap}}
+
+/* SUNNY ARENA: สดใส ส้ม ขาว ชมพู เหลือง; สีแยกตามบทบาท */
+:root{color-scheme:light;font-family:system-ui,-apple-system,'Noto Sans Thai',sans-serif}
+body{--primary:#f97316;--secondary:#fb7185;--highlight:#facc15;--ink:#68371f;--soft:#fff5e7;--border:#ffd1aa;--panel:#fffdf9;--page:linear-gradient(135deg,#fff5db 0%,#ffe1d2 46%,#ffe2ec 100%);background:var(--page);color:var(--ink);min-height:100vh}
+body.teacher-theme{--primary:#ef6b18;--secondary:#f49c20;--highlight:#ffd54b;--ink:#6d351c;--soft:#fff0d2;--border:#f8b86c;--panel:#fffdf6;--page:linear-gradient(145deg,#fff2c7,#ffe0aa 48%,#fff5e7)}
+body.student-theme{--primary:#f45c92;--secondary:#fb923c;--highlight:#ffdc51;--ink:#73324d;--soft:#fff0f6;--border:#ffc1d7;--panel:#fffafc;--page:linear-gradient(145deg,#ffe1ed,#fff0da 53%,#fff6c9)}
+.shell{max-width:1150px}.logo{color:#f46a22;text-shadow:0 2px 0 #fff}.logo b{color:#ed4b8b}.tag{background:#fff;border:2px solid var(--border);color:var(--ink);font-weight:800;box-shadow:0 5px 0 #efaa8038}
+.panel{background:var(--panel);border:2px solid var(--border);box-shadow:0 10px 25px #bb704525;color:var(--ink)}.muted{color:#925f65}.panel h2,.panel h3{color:var(--ink)}
+input,select,textarea{background:#fff;border:2px solid var(--border);color:var(--ink);outline:none}input:focus,select:focus,textarea:focus{border-color:var(--primary);box-shadow:0 0 0 3px #ffc36b55}
+button{background:var(--primary);color:#fff;border:2px solid #ffffff80;box-shadow:0 4px 0 #9b4c2433;font-weight:800;transition:transform .15s,filter .15s}button:hover:not(:disabled){filter:brightness(1.05);transform:translateY(-1px)}button.secondary{background:#fff0bd;color:#844a3b;border-color:#ffce73}button.gold{background:#ffd43c;color:#6c4318;border-color:#ffbd24}button.danger{background:#ef4770;color:#fff;border-color:#ffc2d2}button.leave{background:#fff;color:#d83572;border:2px solid #ff92b6;padding:8px 14px;font-size:14px}
+.digits{gap:12px}.digit{background:linear-gradient(145deg,#ffda62,#ff9e45);border:3px solid #fff;color:#823b15;box-shadow:0 5px 0 #df8b463b}.target{color:#f45b64;text-shadow:2px 3px 0 #fff3b6}.clock{color:var(--primary);text-shadow:2px 4px 0 #fff}.clock.urgent{color:#e53669}.bar{background:#ffe1c6}.bar>div{background:linear-gradient(90deg,#ffb92e,#fa6c7e)}
+.canvasWrap{background:#fff;border:3px dashed #ffb5c5;box-shadow:inset 0 0 0 2px #fff7ed}.status{color:#c55066}.score th{background:#fff0c7;color:#934b3a}.score td,.score th{border-bottom:1px solid #fbd5c2}.pill{background:#ffdb5d;color:#70401e;font-weight:800}.good{color:#138a54}.warn{color:#e54864}
+.roleBanner{background:linear-gradient(100deg,var(--primary),var(--secondary));border-radius:16px;color:#fff;font-weight:900;letter-spacing:.6px;padding:14px 20px;margin-top:18px;box-shadow:0 6px 0 #d48a7240}.studentTop{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:15px}.miniTitle{font-size:13px;font-weight:900;color:var(--primary);letter-spacing:.7px}
+a{color:#e94f83!important}a:hover{text-decoration:underline}
+@media(max-width:700px){.roleBanner{padding:12px}.studentTop{flex-wrap:wrap}.teacher-theme #teacherControls button{margin-bottom:8px}}
+
+/* Student keypad: always prominent and fully visible */
+body.student-theme #game > .grid{grid-template-columns:minmax(0,1fr)}
+body.student-theme #answerPanel{order:0;border:3px solid #f45c92;box-shadow:0 10px 24px #f45c9230}
+body.student-theme #answerPanel + .panel{order:1}
+body.student-theme .mathPad button{min-height:62px;font-weight:900}
+body.student-theme .mathPad{grid-template-columns:repeat(5,minmax(0,1fr))}
+#padJump{display:none;margin:10px 0;width:100%;background:#ffdc51;color:#70354e;border:2px solid #fff;font-size:18px}
+body.student-theme #padJump{display:block}
+/* Touch-first equation keypad */
+.equationBox{background:#fff;border:3px solid var(--border);border-radius:18px;padding:12px;margin:10px 0}
+#expression{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:clamp(19px,4.5vw,28px);font-weight:800;letter-spacing:.2px;margin:0;min-height:60px;touch-action:manipulation}
+.mathPad{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px;margin:12px 0}
+.mathPad button{padding:13px 3px;min-height:55px;font-size:clamp(17px,4vw,25px);border-radius:13px;touch-action:manipulation;user-select:none;-webkit-user-select:none}
+.mathPad .op{background:#ffdc55;color:#783d20;border-color:#f9c039}
+.mathPad .special{background:#ffb8d1;color:#7d2d56;border-color:#ff94bc;font-size:clamp(13px,3vw,19px)}
+.mathPad .edit{background:#fff1d9;color:#884b34;border-color:#ffcb90;font-size:clamp(13px,3vw,18px)}
+.mathPad .wide{grid-column:span 2}
+#digitStatus{font-size:13px;line-height:1.5;margin:5px 0 12px}
+@media(max-width:400px){.mathPad{gap:5px}.mathPad button{min-height:49px;padding:8px 2px}}
+
+/* COMPACT STUDENT VIEW: sticky question and keypad on the same screen */
+body.student-theme .shell{padding:8px 10px;max-width:720px}
+body.student-theme header .logo{font-size:18px}
+body.student-theme header .tag{font-size:11px;padding:5px 9px}
+body.student-theme .roleBanner{display:none}
+body.student-theme #padJump{display:none}
+body.student-theme #game>.panel{display:none}
+#studentQuestionBar{display:none}
+body.student-theme #studentQuestionBar{display:block;position:sticky;top:0;z-index:50;background:#fffafc;border:2px solid #f45c92;border-radius:14px;padding:8px 10px;box-shadow:0 5px 16px #9e40633b;margin:6px 0}
+.compactTop{display:flex;align-items:center;justify-content:space-between;gap:6px;font-size:12px;font-weight:800;color:#914b6b}
+.compactClock{font-size:19px;font-weight:900;color:#e43b76;font-variant-numeric:tabular-nums}
+.compactQuestion{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-top:4px}
+.compactDigits{display:flex;flex-wrap:wrap;gap:5px}
+.compactDigit{min-width:34px;height:36px;padding:0 5px;display:grid;place-items:center;background:#ffda66;color:#743a25;border-radius:9px;font-size:21px;font-weight:900}
+.compactTarget{display:flex;align-items:center;gap:6px;font-size:12px;color:#90516b;white-space:nowrap}
+.compactTarget strong{font-size:27px;color:#ec4c6c}
+body.student-theme #game>.grid{display:block}
+body.student-theme #answerPanel{margin-top:7px;padding:10px 12px;border-radius:14px}
+body.student-theme #answerPanel .studentTop{margin-bottom:3px}
+body.student-theme #answerPanel h3{font-size:15px;margin:2px 0}
+body.student-theme #answerPanel h3 + p{display:none}
+body.student-theme .equationBox{padding:5px;margin:6px 0;border-width:2px;border-radius:10px}
+body.student-theme #expression{min-height:38px;font-size:19px;padding:6px 9px;margin:0}
+body.student-theme .mathPad{gap:5px;margin:7px 0}
+body.student-theme .mathPad button{min-height:43px;padding:6px 2px;font-size:19px;border-radius:9px;box-shadow:0 2px 0 #9b4c2433}
+body.student-theme .mathPad .special,body.student-theme .mathPad .edit{font-size:12px}
+body.student-theme #digitStatus{font-size:11px;margin:4px 0}
+body.student-theme #digitStatus + p{display:none}
+body.student-theme #submitBtn{width:100%;padding:9px;font-size:16px}
+body.student-theme #feedback{font-size:12px;margin:5px 0}
+body.student-theme #answerPanel + .panel{margin-top:10px}
+@media(max-height:740px){body.student-theme .mathPad button{min-height:36px;padding:4px 2px}body.student-theme #studentQuestionBar{padding:5px 8px}.compactDigit{height:31px;min-width:30px;font-size:18px}}
+
+/* FINAL AWARDS — visible on teacher and student screens */
+#awardsOverlay{position:fixed;inset:0;z-index:1000;background:linear-gradient(145deg,#401a59ee,#a82c6ce8,#ed8a3deb);overflow:auto;display:flex;align-items:center;justify-content:center;padding:18px}
+#awardsOverlay.hidden{display:none!important}
+.awardsCard{position:relative;width:min(780px,100%);background:#fffaf2;border:4px solid #ffd66e;border-radius:25px;padding:24px 15px 20px;text-align:center;box-shadow:0 18px 60px #451c4e77;color:#713351}
+.awardsTitle{font-size:clamp(26px,5vw,43px);font-weight:1000;color:#d73878;margin:0 0 5px}
+.awardsSubtitle{font-weight:800;color:#a66b4e;margin:0 0 17px}
+.awardsPodium{display:grid;grid-template-columns:1fr 1.16fr 1fr;align-items:end;gap:9px;margin:0 auto;max-width:680px}
+.awardPlace{border:2px solid #f9c6d6;border-radius:18px 18px 12px 12px;padding:14px 5px 12px;background:#fff0f7;min-width:0;box-shadow:0 6px 14px #a03e6b22}
+.awardPlace.first{background:linear-gradient(#fff6bd,#ffd35c);border-color:#edb42a;padding-top:23px;min-height:210px}
+.awardPlace.second{background:linear-gradient(#f7fbff,#d8e2ec);border-color:#b9c7d6;min-height:168px}
+.awardPlace.third{background:linear-gradient(#fff1e2,#f4c4a3);border-color:#e3a375;min-height:151px}
+.awardMedal{font-size:clamp(29px,6vw,51px);line-height:1.2}
+.awardRank{font-size:clamp(15px,3vw,21px);font-weight:900;margin:5px 0}
+.awardNames{font-size:clamp(13px,2.8vw,18px);font-weight:900;overflow-wrap:anywhere;line-height:1.35}
+.awardScore{font-size:clamp(13px,2.5vw,17px);font-weight:800;margin-top:8px}
+.awardEmpty{font-size:13px;color:#977c85}
+.awardsFoot{margin:16px 0 10px;font-size:13px;color:#996579}
+.awardsClose{width:min(320px,100%);background:#e84d8d;color:white}
+@media(max-width:420px){.awardsCard{padding:17px 9px}.awardsPodium{gap:5px}.awardPlace{padding:9px 3px}.awardPlace.first{min-height:180px}.awardPlace.second{min-height:149px}.awardPlace.third{min-height:138px}}
+</style></head><body><div class="shell"><header class="head"><div class="logo">⚡ MATH <b>ARENA</b></div><div class="tag" id="roomTag">ศึกประลองคิดเลขเร็ว</div></header><div id="home" class="grid"><section class="panel"><h2>👩‍🏫 สำหรับครู</h2><p class="muted">สร้างห้องแข่งขันและควบคุมการแข่งขัน</p><input id="teacher" placeholder="ชื่อครู"><input id="pin" type="password" placeholder="รหัสควบคุมครู อย่างน้อย 6 ตัว"><select id="mode"><option value="A">ประเภท A · 4 ตัว → 2 หลัก</option><option value="B">ประเภท B · 5 ตัว → 3 หลัก</option></select><button onclick="create()">สร้างห้องแข่งขัน</button></section><section class="panel"><h2>🎓 สำหรับนักเรียน</h2><p class="muted">กรอกข้อมูลเพื่อเข้าร่วมการแข่งขัน</p><input id="room" inputmode="numeric" placeholder="รหัสห้อง 6 หลัก"><input id="name" placeholder="ชื่อ-นามสกุล"><input id="className" placeholder="ชั้น เช่น ม.2/1"><input id="number" inputmode="numeric" placeholder="เลขที่"><button onclick="join()">เข้าห้องแข่งขัน</button></section></div>
+<div id="game" class="hidden"><div id="studentQuestionBar" aria-live="polite"><div class="compactTop"><span id="compactRound">รอเริ่มการแข่งขัน</span><span id="compactClock" class="compactClock">01:00</span></div><div class="compactQuestion"><div id="compactDigits" class="compactDigits"><span>รอครูเริ่มโจทย์</span></div><div class="compactTarget">เป้าหมาย <strong id="compactTarget">–</strong></div></div></div><div class="roleBanner" id="roleBanner"></div><button id="padJump" type="button" onclick="document.getElementById('answerPanel').scrollIntoView({behavior:'smooth',block:'start'})">🧮 เปิดแป้นกดสร้างสมการ ↓</button><div class="panel"><div class="head"><h2 id="stage">รอเริ่มการแข่งขัน</h2><span class="pill" id="round">รอบ 0/10</span></div><div id="teacherControls" class="hidden"><p class="muted">ครูควบคุมการเริ่มแข่งขันและเลื่อนข้อหลังหมดเวลา</p><button id="startBtn" onclick="start()">เริ่มการแข่งขัน</button><button id="nextBtn" class="gold hidden" onclick="next()">ตรวจคะแนนข้อนี้</button><button id="endBtn" class="danger" onclick="endGameNow()">จบเกมและสรุปคะแนน</button><button id="newGameBtn" class="secondary" onclick="newGameForTeacher()">↻ เริ่มเกมใหม่ / สร้างห้องใหม่</button><p class="small muted">เมื่อครบ 60 วินาที ระบบจะตรวจคะแนนและหยุดรอ ครูต้องกดเริ่มข้อถัดไปเอง (การตรวจอัตโนมัติอาจล่าช้าตามรอบ Trigger)</p></div><div class="center"><div class="clock" id="clock">01:00</div><div class="bar"><div id="progress" style="width:100%"></div></div><p class="muted" id="wait">รอผู้เล่นเข้าห้อง</p><div id="question" class="hidden"><p class="muted">เลขโดดที่กำหนด</p><div class="digits" id="digits"></div><p class="muted">ผลลัพธ์เป้าหมาย</p><div class="target" id="target"></div></div></div></div>
+<div class="grid"><div id="answerPanel" class="panel hidden"><div class="studentTop"><span class="miniTitle">🌟 PLAYER ZONE</span><button class="leave" onclick="leaveGame()">ออกจากเกม</button></div><h3>🧮 แป้นเครื่องคิดเลขสร้างสมการ</h3><p class="muted small">แตะปุ่มเพื่อพิมพ์สมการเท่านั้น ไม่มีเครื่องคิดเลข ไม่มีปุ่มคำนวณ นักเรียนต้องคิดคำตอบเอง</p>
+<div class="equationBox"><input id="expression" type="text" readonly inputmode="none" autocomplete="off" spellcheck="false" placeholder="แตะปุ่มด้านล่างเพื่อสร้างสมการ" aria-label="สมการที่สร้าง" oninput="updateDigitStatus()"></div>
+<div class="mathPad" id="mathPad" aria-label="แป้นพิมพ์สมการ">
+<button type="button" onclick="padInsert('7')">7</button><button type="button" onclick="padInsert('8')">8</button><button type="button" onclick="padInsert('9')">9</button><button type="button" class="op" onclick="padInsert('+')">+</button><button type="button" class="op" onclick="padInsert('-')">−</button>
+<button type="button" onclick="padInsert('4')">4</button><button type="button" onclick="padInsert('5')">5</button><button type="button" onclick="padInsert('6')">6</button><button type="button" class="op" onclick="padInsert('*')">×</button><button type="button" class="op" onclick="padInsert('/')">÷</button>
+<button type="button" onclick="padInsert('1')">1</button><button type="button" onclick="padInsert('2')">2</button><button type="button" onclick="padInsert('3')">3</button><button type="button" class="op" onclick="padInsert('(')" >(</button><button type="button" class="op" onclick="padInsert(')')">)</button>
+<button type="button" onclick="padInsert('0')">0</button><button type="button" class="op" onclick="padInsert('^')">xʸ</button><button type="button" class="op" onclick="padInsert('!')">n!</button><button type="button" class="op" onclick="padInsert('=')">=</button><button type="button" class="edit" onclick="padBackspace()">⌫</button>
+<button type="button" class="special" onclick="padTemplate('sqrt()' ,5)">√x</button><button type="button" class="special" onclick="padTemplate('root(,)',5)">ⁿ√x</button><button type="button" class="special" onclick="padTemplate('sum(i,,,)',6)">Σ</button><button type="button" class="special" onclick="padInsert(',')">,</button><button type="button" class="edit" onclick="padClear()">ล้าง</button>
+<button type="button" class="edit" onclick="padMove(-1)">◀ เลื่อน</button><button type="button" class="edit" onclick="padMove(1)">เลื่อน ▶</button><button type="button" class="edit" onclick="padUndo()">↶ ย้อน</button>
+</div>
+<p id="digitStatus" class="muted">ใช้เลขโดดตามโจทย์ให้ครบทุกตัว และอย่านับตัวเลขหลัง = เป็นเลขที่ใช้สร้างสมการ</p>
+<p class="muted small">รูปแบบที่รองรับ: + − × ÷ ^ !, sqrt(x), root(n,x), sum(i,a,b,นิพจน์) · ซิกมาใช้ i เป็นตัวแปร และใช้เลขโดดจากโจทย์ครั้งเดียว</p>
+<button id="submitBtn" onclick="submit()">ส่งคำตอบ</button><p class="status" id="feedback"></p></div><div class="panel"><h3>🏆 ตารางคะแนนสด</h3><p class="small muted">คะแนนปรับเมื่อจบแต่ละข้อ · คะแนนเสมอได้อันดับร่วม</p><p id="sheetLink" class="small hidden"></p><table class="score"><thead><tr><th>อันดับ</th><th>ผู้แข่งขัน</th><th>คะแนน</th></tr></thead><tbody id="scores"></tbody></table><p id="result" class="muted"></p></div></div></div><p class="small muted">MATH ARENA · แข่งขัน 10 ข้อ · ข้อละ 60 วินาที</p></div>
+<div id="awardsOverlay" class="hidden" role="dialog" aria-modal="true" aria-label="ประกาศผลการแข่งขัน"><div class="awardsCard"><h2 class="awardsTitle">🏆 ประกาศผลการแข่งขัน 🏆</h2><p class="awardsSubtitle" id="awardsRoom">MATH ARENA</p><div class="awardsPodium" id="awardsPodium"></div><p class="awardsFoot">อันดับคำนวณจากคะแนนรวม • คะแนนเท่ากันได้รับอันดับร่วม</p><button type="button" class="awardsClose" onclick="hideAwards()">ดูตารางคะแนนทั้งหมด</button></div></div><script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-app-compat.js"></script><script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-auth-compat.js"></script><script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-database-compat.js"></script>
+<script>
+let fb=null,roomCode='',role='',token='',pinValue='',playerId='',state=null,clockInterval=null,submittedFor=-1,lastIndex=-1,working=false,roomRef=null,awardsShownFor="";
+const el=id=>document.getElementById(id),show=(id,on)=>el(id).classList.toggle('hidden',!on),msg=(s)=>{el('feedback').textContent=s;};
+function api(fn,payload){return new Promise((resolve,reject)=>google.script.run.withSuccessHandler(resolve).withFailureHandler(e=>reject(Error(e.message||String(e))))[fn](payload))}
+async function initialize(){try{const cfg=await api('publicConfig');if(!cfg.firebase)throw Error('ยังไม่ได้ตั้งค่า FIREBASE_WEB_CONFIG');firebase.initializeApp(cfg.firebase);await firebase.auth().signInAnonymously();fb=firebase.database();const stored=JSON.parse(localStorage.getItem('arenaSession')||'null');if(stored){roomCode=stored.code;role=stored.role;token=stored.token||'';pinValue=stored.pin||'';playerId=stored.playerId||'';enter()}}catch(e){alert('การตั้งค่าระบบ: '+e.message)}}
+async function create(){try{const r=await api('createRoom',{teacher:el('teacher').value,pin:el('pin').value,mode:el('mode').value});roomCode=r.code;role='teacher';pinValue=r.teacherPin;persist();enter()}catch(e){alert(e.message)}}
+async function join(){try{const r=await api('joinRoom',{code:el('room').value,name:el('name').value,className:el('className').value,number:el('number').value});roomCode=r.code;role='student';token=r.token;playerId=r.playerId;persist();enter()}catch(e){alert(e.message)}}
+function persist(){localStorage.setItem('arenaSession',JSON.stringify({code:roomCode,role,token,pin:pinValue,playerId}))}
+function enter(){awardsShownFor='';el('awardsOverlay').classList.add('hidden');el('newGameBtn').disabled=false;document.body.classList.toggle('teacher-theme',role==='teacher');document.body.classList.toggle('student-theme',role==='student');el('roleBanner').textContent=role==='teacher'?'🎯 TEACHER CONTROL · ศูนย์ควบคุมการแข่งขัน':'🍊 PLAYER ARENA · สนามแข่งขันของนักเรียน';if(role==='teacher'){api('getDashboardLink').then(url=>{el('sheetLink').innerHTML='<a style="color:#6fe4ff" target="_blank" rel="noopener" href="'+encodeURI(url)+'">เปิด Google Sheets ผลการแข่งขัน</a>';show('sheetLink',true)}).catch(()=>{})}show('home',false);show('game',true);show('teacherControls',role==='teacher');show('answerPanel',role==='student');el('roomTag').textContent='ห้อง '+roomCode;if(!fb){alert('Firebase ยังไม่พร้อม');return}if(roomRef)roomRef.off('value');roomRef=fb.ref('mathArena/v1/rooms/'+roomCode);roomRef.on('value',snap=>{const v=snap.val();if(!v){alert('ไม่พบห้องแข่งขัน');return}render(v)},e=>alert('Firebase: '+e.message));clearInterval(clockInterval);clockInterval=setInterval(tick,100)}
+function render(v){
+ state=v;
+ const ps=Object.values(v.players||{}).sort((a,b)=>b.score-a.score||a.name.localeCompare(b.name,'th'));
+ el('scores').innerHTML=ps.map(p=>`<tr><td>${1+ps.filter(x=>x.score>p.score).length}</td><td>${escapeHtml(p.name)} <span class="small muted">${escapeHtml(p.className)}</span> ${p.withdrawn?'(ออกแล้ว)':p.submitted?'✓':''}</td><td>${p.score||0}</td></tr>`).join('');
+ el('round').textContent='ข้อ '+(v.status==='lobby'?0:v.index+1)+'/10';
+ el('stage').textContent=v.status==='lobby'?'ห้องรอแข่งขัน · '+ps.length+' คน':v.status==='finished'?'จบการแข่งขัน':v.status==='waiting'?'จบข้อ '+(v.index+1)+' · รอครูเริ่มข้อถัดไป':'กำลังแข่งขัน';
+ const canStart=role==='teacher'&&(v.status==='lobby'||v.status==='waiting');
+ show('startBtn',canStart);el('startBtn').textContent=v.status==='waiting'?'▶ เริ่มข้อที่ '+(v.index+2):'▶ เริ่มการแข่งขัน';
+ show('endBtn',role==='teacher'&&v.status!=='finished');
+ show('question',v.status!=='lobby'&&!!v.question);
+ if(v.question){el('digits').innerHTML=v.question.digits.map(d=>`<div class="digit">${d}</div>`).join('');el('target').textContent=v.question.target}
+ el('compactRound').textContent=v.status==='lobby'?'รอครูเริ่มการแข่งขัน':v.status==='finished'?'จบการแข่งขัน':v.status==='waiting'?'รอครูเริ่มข้อถัดไป':'ข้อ '+(v.index+1)+'/10';
+ el('compactDigits').innerHTML=v.question?v.question.digits.map(d=>`<span class="compactDigit">${d}</span>`).join(''):'<span>รอครูเริ่มโจทย์</span>';
+ el('compactTarget').textContent=v.question?v.question.target:'–';
+ show('nextBtn',role==='teacher'&&v.status==='playing'&&Date.now()>=v.deadline);
+ if(v.index!==lastIndex){lastIndex=v.index;submittedFor=-1;padClear();msg('')}
+ const mine=v.players?.[playerId];const already=mine?.submitted||submittedFor===v.index;
+ el('submitBtn').disabled=v.status!=='playing'||already||!!mine?.withdrawn||Date.now()>=v.deadline;
+ el('wait').textContent=v.status==='lobby'?'รอครูเริ่มการแข่งขัน':v.status==='finished'?'การแข่งขันสิ้นสุดแล้ว':v.status==='waiting'?'ตรวจคะแนนแล้ว · รอครูเริ่มข้อถัดไป':already?'ส่งคำตอบแล้ว รอหมดเวลา':'สร้างสมการด้วยแป้นเครื่องคิดเลขและส่งภายใน 60 วินาที';
+ el('result').textContent=v.lastResult?'ข้อ '+v.lastResult.question+' · เป้าหมาย '+v.lastResult.target+' | '+v.lastResult.detail.filter(x=>x.points>0).map(x=>x.name+' +'+x.points).join(', '):'';
+ if(v.status==='finished')el('result').textContent+=' · จบการแข่งขันแล้ว';
+ updateAwards(v,ps);
+ tick();
+}
+
+function updateAwards(v,ps){
+ const overlay=el('awardsOverlay');
+ if(v.status!=='finished'){
+   overlay.classList.add('hidden');
+   awardsShownFor='';
+   return;
+ }
+ // Shared ranks: e.g. 1,1,3. Only ranks 1–3 appear on the podium.
+ const grouped=[1,2,3].map(rank=>ps.filter(p=>1+ps.filter(other=>(other.score||0)>(p.score||0)).length===rank));
+ const order=[{rank:2,medal:'🥈',cls:'second'},{rank:1,medal:'🥇',cls:'first'},{rank:3,medal:'🥉',cls:'third'}];
+ el('awardsRoom').textContent='ห้อง '+(v.code||roomCode)+' · ผลคะแนนรวม';
+ el('awardsPodium').innerHTML=order.map(item=>{
+   const winners=grouped[item.rank-1];
+   const names=winners.length?winners.map(p=>escapeHtml(p.name)).join('<div style="height:6px"></div>'):'<span class="awardEmpty">ไม่มีผู้ได้อันดับนี้</span>';
+   const score=winners.length?'<div class="awardScore">'+(winners[0].score||0)+' คะแนน</div>':'';
+   return '<div class="awardPlace '+item.cls+'"><div class="awardMedal">'+item.medal+'</div><div class="awardRank">อันดับ '+item.rank+'</div><div class="awardNames">'+names+'</div>'+score+'</div>';
+ }).join('');
+ const identity=(v.code||roomCode)+'|'+(v.updatedAt||'finished');
+ // Show once per finished room in this page session; Firebase updates should not reopen it.
+ if(!awardsShownFor){overlay.classList.remove('hidden');awardsShownFor=v.code||roomCode;}
+}
+function hideAwards(){el('awardsOverlay').classList.add('hidden')}
+
+function tick(){if(!state)return;const ms=state.status==='playing'?Math.max(0,state.deadline-Date.now()):0,sec=Math.ceil(ms/1000);const clockText=String(Math.floor(sec/60)).padStart(2,'0')+':'+String(sec%60).padStart(2,'0');el('clock').textContent=clockText;el('compactClock').textContent=clockText;el('clock').classList.toggle('urgent',sec<=5&&state.status==='playing');el('progress').style.width=(ms/60000*100)+'%';show('nextBtn',role==='teacher'&&state.status==='playing'&&ms===0);el('submitBtn').disabled=role!=='student'||state.status!=='playing'||ms===0||submittedFor===state.index||!!state.players?.[playerId]?.submitted||!!state.players?.[playerId]?.withdrawn}
+
+async function start(){try{await api('startRound',{code:roomCode,pin:pinValue})}catch(e){alert(e.message)}}
+async function next(){try{await api('advance',{code:roomCode,pin:pinValue})}catch(e){alert(e.message)}}
+
+async function endGameNow(){
+  if(!state||state.status==='finished')return;
+  const promptText=state.status==='playing'?'ต้องการจบเกมทันทีหรือไม่? ระบบจะตรวจคำตอบที่ส่งมาแล้วในข้อปัจจุบัน และบันทึกคะแนนสรุป':'ต้องการปิดห้องแข่งขันและสรุปผลตอนนี้หรือไม่?';
+  if(!confirm(promptText))return;
+  const b=el('endBtn');b.disabled=true;
+  try{await api('endGame',{code:roomCode,pin:pinValue});alert('จบการแข่งขันและบันทึกผลแล้ว');}
+  catch(e){alert('ไม่สามารถจบเกม: '+e.message);b.disabled=false;}
+}
+async function newGameForTeacher(){
+  if(role!=='teacher')return;
+  const active=state&&state.status!=='finished';
+  const message=active
+    ? 'ห้องแข่งขันปัจจุบันยังไม่จบ\n\nต้องการจบเกมและบันทึกคะแนนก่อนกลับไปสร้างห้องใหม่หรือไม่?'
+    : 'ต้องการกลับไปหน้าแรกเพื่อสร้างห้องแข่งขันใหม่หรือไม่?';
+  if(!confirm(message))return;
+  const btn=el('newGameBtn');btn.disabled=true;
+  try{
+    if(active){
+      await api('endGame',{code:roomCode,pin:pinValue});
+    }
+    resetToHome();
+    el('pin').value='';
+    el('room').value='';
+    btn.disabled=false;
+  }catch(e){
+    alert('ยังไม่สามารถสร้างห้องใหม่ได้: '+e.message+'\nระบบยังคงอยู่ในห้องเดิมเพื่อป้องกันข้อมูลการแข่งขันสูญหาย');
+    btn.disabled=false;
+  }
+}
+async function leaveGame(){
+  if(!confirm('ต้องการออกจากเกมหรือไม่? หากเริ่มแข่งขันแล้วจะไม่สามารถกลับมาส่งคำตอบด้วยสิทธิ์เดิมได้'))return;
+  const b=document.querySelector('.leave');if(b)b.disabled=true;
+  try{await api('leaveRoom',{code:roomCode,token:token});resetToHome();}
+  catch(e){alert('ออกจากเกมไม่สำเร็จ: '+e.message);if(b)b.disabled=false;}
+}
+function resetToHome(){
+  if(roomRef){roomRef.off('value');roomRef=null;}
+  clearInterval(clockInterval);clockInterval=null;
+  localStorage.removeItem('arenaSession');roomCode='';role='';token='';pinValue='';playerId='';state=null;lastIndex=-1;submittedFor=-1;
+  document.body.classList.remove('teacher-theme','student-theme');
+  show('game',false);show('home',true);el('roomTag').textContent='ศึกประลองคิดเลขเร็ว';
+  if(el('number'))el('number').value='';
+}
+
+async function submit(){if(working)return;working=true;el('submitBtn').disabled=true;try{const r=await api('submitAnswer',{code:roomCode,token,index:state.index,expression:el('expression').value});submittedFor=state.index;msg(r.valid?'✓ ส่งแล้ว · ผลลัพธ์ '+r.value:'ส่งแล้ว แต่สมการไม่ผ่าน: '+r.reason)}catch(e){msg('ไม่สำเร็จ: '+e.message);el('submitBtn').disabled=false}finally{working=false}}
+function escapeHtml(s){return String(s||'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+// Equation entry uses only on-screen buttons; never focuses a text input.
+let padHistory=[],padCaret=0;
+function padSave(){const f=el('expression');padHistory.push({text:f.value,caret:padCaret});if(padHistory.length>80)padHistory.shift()}
+function padInsert(value){const f=el('expression');padSave();const p=Math.max(0,Math.min(padCaret,f.value.length));f.value=f.value.slice(0,p)+value+f.value.slice(p);padCaret=p+value.length;updateDigitStatus()}
+function padTemplate(template,offset){const p=padCaret;padInsert(template);padCaret=p+offset}
+function padBackspace(){const f=el('expression');if(!padCaret)return;padSave();const p=Math.min(padCaret,f.value.length);f.value=f.value.slice(0,p-1)+f.value.slice(p);padCaret=p-1;updateDigitStatus()}
+function padClear(){const f=el('expression');if(f.value)padSave();f.value='';padCaret=0;updateDigitStatus()}
+function padUndo(){const prev=padHistory.pop();if(!prev)return;el('expression').value=prev.text;padCaret=prev.caret;updateDigitStatus()}
+function padMove(delta){const f=el('expression');padCaret=Math.max(0,Math.min(f.value.length,padCaret+delta))}
+// Readonly + inputmode=none blocks iPadOS/Android virtual keyboard even if tapped.
+function updateDigitStatus(){const status=el('digitStatus');if(!status)return;const question=state?.question;if(!question){status.textContent='ใช้เลขโดดตามโจทย์ให้ครบทุกตัว';return}const lhs=el('expression').value.split('=')[0];const expected={};question.digits.forEach(d=>expected[d]=(expected[d]||0)+1);const actual={};(lhs.match(/[0-9]/g)||[]).forEach(d=>actual[d]=(actual[d]||0)+1);const missing=[],extra=[];for(const [d,n] of Object.entries(expected))if((actual[d]||0)<n)missing.push(d+' ×'+(n-(actual[d]||0)));for(const [d,n] of Object.entries(actual))if(n>(expected[d]||0))extra.push(d+' ×'+(n-(expected[d]||0)));status.textContent=extra.length?'⚠ ใช้เลขเกิน/นอกโจทย์: '+extra.join(', '):missing.length?'เลขที่ยังไม่ได้ใช้: '+missing.join(', '):'✓ ใช้เลขโดดครบแล้ว (ยังต้องตรวจรูปแบบและผลลัพธ์)';status.style.color=extra.length?'#d32f55':missing.length?'#925f65':'#138a54'}
+window.addEventListener('load',initialize);
+</script></body></html>
+
+
+
